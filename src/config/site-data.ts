@@ -14,8 +14,8 @@ export const SITE_DATA = {
   },
   navigation: {
     main: [
-      { label: "Clientes", href: "/#clientes", sectionId: "clientes" },
       { label: "Sobre", href: "/#sobre", sectionId: "sobre" },
+      { label: "Clientes", href: "/#clientes", sectionId: "clientes" },
     ],
     support: [
       { label: "Fabricantes", href: "/fabricantes" },

@@ -27,7 +27,7 @@ const Fabricantes = () => {
   return (
     <>
       <SEO 
-        title="Fabricantes Parceiros" 
+        title="Fabricantes" 
         description="Acesse o suporte oficial de marcas como Dell, Samsung, Acer, Apple e Asus para drivers e manuais."
         url="/fabricantes"
       />
@@ -38,7 +38,7 @@ const Fabricantes = () => {
               Suporte
             </span>
             <h1 className="mt-6 font-display text-4xl lg:text-6xl font-bold leading-[1.05] text-balance">
-              Fabricantes <span className="italic text-muted-foreground">parceiros</span>
+              Fabricantes
             </h1>
             <p className="mt-4 text-muted-foreground">
               Acesse o suporte oficial de cada fabricante. Clique na logo para ser redirecionado à página de suporte, drivers e manuais.

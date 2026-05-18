@@ -16,7 +16,7 @@ const Garantia = () => {
     <>
       <SEO 
         title="Garantia" 
-        description="Consulte e solicite a garantia oficial de fabricantes parceiros como a Lenovo."
+        description="Consulte e solicite a garantia oficial de fabricantes como a Lenovo."
         url="/garantia"
       />
       <main className="pt-32 pb-20">

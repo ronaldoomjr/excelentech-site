@@ -42,6 +42,27 @@ const Navbar = () => {
 
         <nav className="hidden md:block">
           <ul className="flex items-center gap-1">
+            <li>
+              <a
+                href={SITE_DATA.contact.store}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors block"
+              >
+                Loja
+              </a>
+            </li>
+            {SITE_DATA.navigation.main.map((item) => (
+              <li key={item.label}>
+                <a
+                  href={item.href}
+                  onClick={(e) => scrollToSection(e, item.sectionId)}
+                  className="px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors block"
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
             <li
               className="relative"
               onMouseEnter={() => setSupportOpen(true)}
@@ -73,27 +94,6 @@ const Navbar = () => {
                   ))}
                 </ul>
               </div>
-            </li>
-            {SITE_DATA.navigation.main.map((item) => (
-              <li key={item.label}>
-                <a
-                  href={item.href}
-                  onClick={(e) => scrollToSection(e, item.sectionId)}
-                  className="px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors block"
-                >
-                  {item.label}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a
-                href={SITE_DATA.contact.store}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="px-4 py-2 rounded-lg text-sm font-medium text-white hover:bg-white/10 transition-colors block"
-              >
-                Loja
-              </a>
             </li>
           </ul>
         </nav>
