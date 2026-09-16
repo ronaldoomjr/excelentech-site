@@ -9,6 +9,7 @@ import Fabricantes from "./pages/Fabricantes.tsx";
 import Tokens from "./pages/Tokens.tsx";
 import Garantia from "./pages/Garantia.tsx";
 import Downloads from "./pages/Downloads.tsx";
+import TesteTeclado from "./pages/TesteTeclado.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/tokens-e-certificados" element={<Layout><Tokens /></Layout>} />
           <Route path="/garantia" element={<Layout><Garantia /></Layout>} />
           <Route path="/downloads" element={<Layout><Downloads /></Layout>} />
+          <Route path="/teste-seu-teclado" element={<Layout><TesteTeclado /></Layout>} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
