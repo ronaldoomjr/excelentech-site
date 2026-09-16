@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { RotateCcw, Keyboard as KeyboardIcon, CheckCircle2, AlertTriangle } from "lucide-react";
+import { RotateCcw, Keyboard as KeyboardIcon, CheckCircle2, AlertTriangle, Mouse, MousePointerClick } from "lucide-react";
 import SEO from "@/components/SEO";
 import { cn } from "@/lib/utils";
 
@@ -184,6 +184,9 @@ const TesteTeclado = () => {
   const [pressed, setPressed] = useState<Set<string>>(new Set());
   const [tested, setTested] = useState<Set<string>>(new Set());
   const [locks, setLocks] = useState({ caps: false, num: false, scroll: false });
+  const [mousePressed, setMousePressed] = useState<Set<number>>(new Set());
+  const [mouseTested, setMouseTested] = useState<Set<number>>(new Set());
+  const [mouseCount, setMouseCount] = useState(0);
   const [count, setCount] = useState(0);
   const [log, setLog] = useState<string[]>([]);
   const logRef = useRef<HTMLDivElement>(null);
@@ -202,8 +205,26 @@ const TesteTeclado = () => {
   const reset = useCallback(() => {
     setPressed(new Set());
     setTested(new Set());
+    setMousePressed(new Set());
+    setMouseTested(new Set());
+    setMouseCount(0);
     setCount(0);
     setLog([]);
+  }, []);
+
+  const onMouseBtnDown = useCallback((btn: number) => {
+    setMousePressed((p) => new Set(p).add(btn));
+    setMouseTested((t) => new Set(t).add(btn));
+    setMouseCount((c) => c + 1);
+    setLog((l) => [...l.slice(-199), btn === 0 ? "[Clique Esquerdo]" : "[Clique Direito]"]);
+  }, []);
+
+  const onMouseBtnUp = useCallback((btn: number) => {
+    setMousePressed((p) => {
+      const n = new Set(p);
+      n.delete(btn);
+      return n;
+    });
   }, []);
 
   useEffect(() => {
@@ -350,10 +371,11 @@ const TesteTeclado = () => {
             </div>
 
             {/* Status */}
-            <div className="mt-6 grid grid-cols-2 md:grid-cols-4 gap-3">
+            <div className="mt-6 grid grid-cols-2 md:grid-cols-5 gap-3">
               {[
                 { label: "Teclas testadas", value: `${testedInLayout}/${total}` },
                 { label: "Pressionamentos", value: count },
+                { label: "Cliques", value: mouseCount },
                 { label: "Não respondidas", value: untested.length },
                 { label: "Progresso", value: `${progress}%` },
               ].map((s) => (
@@ -391,6 +413,50 @@ const TesteTeclado = () => {
                   {l.label} {l.on ? "ON" : "OFF"}
                 </span>
               ))}
+            </div>
+
+            {/* Touchpad (botões esquerdo/direito) */}
+            <div className="mt-8">
+              <div className="flex items-center gap-2 text-white/70 text-xs font-semibold uppercase tracking-wider mb-3">
+                <Mouse className="h-4 w-4 text-[#FBC523]" /> Touchpad — botões esquerdo e direito
+              </div>
+              <div
+                className="grid grid-cols-2 gap-1.5 select-none"
+                onContextMenu={(e) => e.preventDefault()}
+              >
+                {[
+                  { btn: 0, label: "Botão Esquerdo" },
+                  { btn: 2, label: "Botão Direito" },
+                ].map(({ btn, label }) => {
+                  const isPressed = mousePressed.has(btn);
+                  const isTested = mouseTested.has(btn);
+                  return (
+                    <button
+                      key={btn}
+                      type="button"
+                      onMouseDown={(e) => e.button === btn && onMouseBtnDown(btn)}
+                      onMouseUp={(e) => e.button === btn && onMouseBtnUp(btn)}
+                      onMouseLeave={() => onMouseBtnUp(btn)}
+                      onContextMenu={(e) => e.preventDefault()}
+                      className={cn(
+                        "h-24 rounded-xl border flex flex-col items-center justify-center gap-1.5 transition-all duration-75",
+                        "text-xs font-semibold",
+                        isPressed
+                          ? "border-[#FBC523] bg-[#FBC523] text-[#0A0A0A] scale-[0.98] shadow-[0_0_18px_rgba(251,197,35,0.55)]"
+                          : isTested
+                            ? "border-[#FBC523]/50 bg-[#FBC523]/20 text-[#FBC523]"
+                            : "border-white/10 bg-white/[0.04] text-white/55",
+                      )}
+                    >
+                      <MousePointerClick className="h-5 w-5" />
+                      {label}
+                      <span className="text-[10px] font-normal opacity-70">
+                        {isTested ? "Testado ✓" : "Clique aqui com o " + label.toLowerCase()}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Teclado */}
